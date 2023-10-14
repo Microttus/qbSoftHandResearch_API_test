@@ -4,7 +4,8 @@
 
 #include "../include/ur5_qbhand_control/qbSoftHandControl.hh"
 
-#include <qbrobotics_research_api/qbsofthand_research_api.h>
+#include "../libs/serial/include/serial/serial.h"
+#include "../libs/qbrobotics-driver/libs/research/include/qbrobotics_research_api/qbsofthand_research_api.h"
 
 #include <iostream>
 #include <string>

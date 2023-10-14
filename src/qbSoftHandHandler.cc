@@ -2,10 +2,11 @@
 // Created by Martin Økter on 07/10/2023.
 //
 
-#include "../include/ur5_qbhand_control/qbSoftHandHandler.hh"
+#include "ur5_qbhand_control/qbSoftHandHandler.hh"
 
-#include <serial/serial.h>
-#include <qbrobotics_research_api/qbsofthand_research_api.h>
+//include "serial/serial.h"
+//#include <qbrobotics_research_api/qbsofthand_research_api.h>
+
 
 #include <iostream>
 #include <string>
@@ -18,22 +19,30 @@
 #include <vector>
 #include <memory>
 #include <set>
+#include <vector>
 
 void qbSoftHandHandler::testLib() {
     std::cout << "Test conducted with success" << std::endl;
 }
 
 
-qbSoftHandHandler::qbSoftHandHandler() {
-    qbSoftHandHandler::communication_handler_ = std::make_shared<qbrobotics_research_api::CommunicationLegacy>(); // make shared pointer that handles the communication
+qbSoftHandHandler::qbSoftHandHandler() :
+communication_handler_(std::make_shared<qbrobotics_research_api::CommunicationLegacy>()) // make shared pointer that handles the communication
+{
 
 }
 
 qbSoftHandHandler::~qbSoftHandHandler() {
+    for (auto &port:serial_ports_) {
+        if (communication_handler_->closeSerialPort(port.serial_port) == 0) {
+            std::cout << "serial port " << port.serial_port << " closed" << std::endl;
+        }
+    }
 
 }
 
 int qbSoftHandHandler::ScanForDevices(const int &max_repeats) {
+    //qbSoftHandHandler::communication_handler_ = std::make_shared<qbrobotics_research_api::CommunicationLegacy>();
 
     if (qbSoftHandHandler::communication_handler_->listSerialPorts(serial_ports_) < 0) {
         std::cerr << "[scanForDevices] no serial ports found" << std::endl;
@@ -55,12 +64,14 @@ int qbSoftHandHandler::ScanForDevices(const int &max_repeats) {
         }
 
         if (qbSoftHandHandler::communication_handler_->listConnectedDevices(serial_port.serial_port, qbSoftHandHandler::device_ids_) >= 0) { // retrieved at least a qbrobotics device
-            for(auto &device_id:device_ids_) {
+            for(auto &device_id:qbSoftHandHandler::device_ids_) {
+                /*
                 if (device_id.id == 120 || device_id.id == 0) {
                     std::cout << "Not valid device retrieved!" << std::endl;
                     continue;  // ID 120 is reserved, ID 0 is for sure an error
                 }
-                qbSoftHandHandler::soft_hands_.insert(std::make_pair(static_cast<int>(device_id.id), std::make_shared<qbrobotics_research_api::qbSoftHandLegacyResearch>(communication_handler_, "dev", serial_port.serial_port, device_id.id)));
+                */
+                //qbSoftHandHandler::soft_hands_.insert(std::make_pair(static_cast<int>(device_id.id), std::make_shared<qbrobotics_research_api::qbSoftHandLegacyResearch>(communication_handler_, "dev", serial_port.serial_port, device_id.id)));
                 qbrobotics_devices_found++;
             }
             if (qbrobotics_devices_found == 0) {
@@ -68,6 +79,7 @@ int qbSoftHandHandler::ScanForDevices(const int &max_repeats) {
             }
         }
     }
+
     return qbrobotics_devices_found;
 
 }

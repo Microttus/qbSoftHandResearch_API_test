@@ -41,8 +41,6 @@
 
 qbSoftHandHandler my_hand_;
 
-my_hand_.testLib();
-
 // handler to manage the communication with qbdevices
 std::shared_ptr<qbrobotics_research_api::Communication> communication_handler_;
 // Communication ports
@@ -51,7 +49,7 @@ std::map<int, std::shared_ptr<qbrobotics_research_api::qbSoftHandLegacyResearch>
 // IDs of connected devices 
 std::vector<qbrobotics_research_api::Communication::ConnectedDeviceInfo> device_ids_;
 
-
+/*
 int open(const std::string &serial_port) {
   if (!std::regex_match(serial_port, std::regex("/dev/ttyUSB[[:digit:]]+"))) {
     return -1;
@@ -101,9 +99,13 @@ int scanForDevices(const int &max_repeats) {
   }
   return qbrobotics_devices_found;
 }
-
+*/
 
 int main() {
+    communication_handler_ = std::make_shared<qbrobotics_research_api::CommunicationLegacy>(); // make shared pointer that handles the communication
+
+    my_hand_.testLib();
+/*
   std::cout << "qbrobotics devices found: " << scanForDevices(2) << std::endl;
   for (auto &id:device_ids_){
     if (id.id == 120 || id.id == 0) {
@@ -325,5 +327,5 @@ int main() {
       std::cout << "serial port "<< port.serial_port <<  " closed" << std::endl;
     }
   }
-  
+  */
 }
