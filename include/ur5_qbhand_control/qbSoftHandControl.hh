@@ -6,13 +6,15 @@
 #define UR5_QBHAND_CONTROL_QBSOFTHANDCONTROL_HH
 
 #include <map>
+#include <vector>
 
-#include "../libs/serial/include/serial/serial.h"
-#include "../libs/qbrobotics-driver/libs/research/include/qbrobotics_research_api/qbsofthand_research_api.h"
+#include "serial/serial.h"
+#include "qbrobotics_research_api/qbsofthand_research_api.h"
 
 class qbSoftHandControl{
 public:
-    qbSoftHandControl();//std::map<int, std::shared_ptr<qbrobotics_research_api::qbSoftHandLegacyResearch>> *device_info, std::vector<qbrobotics_research_api::Communication::ConnectedDeviceInfo> *device_ids_in_);
+    qbSoftHandControl(int hand_nr_, std::map<int, std::shared_ptr<qbrobotics_research_api::qbSoftHandLegacyResearch> > *device_info);
+
     ~qbSoftHandControl();
 
     std::string GetDeviceInfo();
@@ -45,10 +47,10 @@ public:
 
 private:
 
-    std::map<int, std::shared_ptr<qbrobotics_research_api::qbSoftHandLegacyResearch> > soft_hands_;
+    std::map<int, std::shared_ptr<qbrobotics_research_api::qbSoftHandLegacyResearch> > this_soft_hand_;
     std::vector<qbrobotics_research_api::Communication::ConnectedDeviceInfo> device_ids_;           // IDs of connected devices
 
-    int dev_id;
+    int dev_id_;
 };
 
 #endif //UR5_QBHAND_CONTROL_QBSOFTHANDCONTROL_HH

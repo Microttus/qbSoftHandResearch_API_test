@@ -12,10 +12,11 @@
 #include <memory>
 #include <set>
 
-//include "serial/serial.h"
+#include "qbSoftHandControl.hh"
+
+#include "serial/serial.h"
 #include "qbrobotics_research_api/qbsofthand_research_api.h"
-//#include "../libs/serial/include/serial/serial.h"
-//#include "../libs/qbdevice-api-7.x.x/qbrobotics-driver/libs/research/include/qbrobotics_research_api/qbsofthand_research_api.h"
+
 
 class qbSoftHandHandler{
 public:
@@ -27,14 +28,16 @@ public:
 
     void testLib();
 
-    //std::vector<qbrobotics_research_api::Communication::ConnectedDeviceInfo> ReturnDeviceID();
+    std::vector<qbSoftHandControl> ReturnDeviceMap();
 
 private:
     std::shared_ptr<qbrobotics_research_api::Communication> communication_handler_;                 // Handler to manage the communication with qbdevices
     std::vector<serial::PortInfo> serial_ports_;
     std::vector<qbrobotics_research_api::Communication::ConnectedDeviceInfo> device_ids_;           // IDs of connected devices
-    std::map<int, std::shared_ptr<qbrobotics_research_api::qbSoftHandLegacyResearch> > soft_hands_;
+    std::map<int, std::shared_ptr<qbrobotics_research_api::qbSoftHandLegacyResearch> > soft_hands_detected_;
+    std::vector<qbSoftHandControl> device_list_;
 
+    std::vector<int> test_list;
 };
 
 #endif //UR5_QBHAND_CONTROL_QBSOFTHANDHANDLER_HH

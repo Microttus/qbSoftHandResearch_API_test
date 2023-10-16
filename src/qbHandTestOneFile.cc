@@ -151,6 +151,7 @@ public:
 
         return qbrobotics_devices_found;
     };
+
     int OpenSerialPort(const std::string &serial_port){
         if (!std::regex_match(serial_port, std::regex("/dev/ttyUSB[[:digit:]]+"))) {
             return -1;
